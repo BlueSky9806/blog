@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>关于我</title>
+</head>
+
+<body>
+<!-- 导航 -->
+<nav th:replace="_fragments :: menu(5)">
+</nav>
+
+<!-- 主体 -->
+<div class="m-container m-padded-tb-big animate__animated animate__fadeInDown">
+  <div class="ui container">
+    <div class="ui padded-tb-big padded-lr-big segment">
+
+      <div class="m-padded-tb-big m-padded-lr">
+        <span class="square"></span>
+        <span class="main-title">关于我</span>
+        <span class="vertical-line"></span>
+        <span class="sub-title">About Me</span>
+      </div>
+
+      <div class="ui stackable grid m-padded-lr">
+
+
+        <div class="eleven wide column">
+          <div class="ui center aligned stackable grid">
+                        <span class="m-text">
+                            <br><br>
+                            1. 为什么要做一个博客？
+
+                            <br>首先，博客给我的感觉并没有像其他平台那么限制，非常的自由。除此之外，我写了个博客系统给自己用用，看看自己写的产品，体验怎么样。<br><br>
+
+                            2. 这个博客会记录什么？
+                            <br>主要记录我在编码中遇到的问题和解决方法以及一些自己原创的教程，另外还有自己的想法和总结。<br><br>
+
+                            3. 这个博客系统会开源吗？还会继续完善吗？
+                            <br>其实我认为每个学习后端的朋友都应该自己写一套博客系统，提升的不是技术而是对于整个项目的流程的把控。这个博客必定会开源，但是需要我的进一步完善才好放出来。这个博客系统我会一直完善下去的<br><br>
+
+                            <br>
+                            <br>
+                            <br>
+
+                        </span>
+
+
+          </div>
+
+
+        </div>
+
+
+        <div class="five wide column">
+
+          <div class="ui segment basic">
+            <div class="ui card">
+              <div class="image">
+                <img th:src="@{images/my.jpg}">
+              </div>
+              <div class="content">
+                <a class="header">hao</a>
+                <br>
+                <div class="meta">
+                  <span class="date">技术栈：</span>
+                  <span class="date">Java全栈、Golang</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ui center aligned  segment basic">
+            <div class="ui link list">
+              <div class="item">
+                <img th:src="@{images/wechat.jpg}" alt="123" class="ui rounded image" style="width: 240px;">
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+
+<!-- footer -->
+<div id="latestBlogs" th:fragment="latestBlogs">
+  <div>
+    <footer th:replace="_fragments :: footer">
+    </footer>
+  </div>
+</div>
+
+<th:block th:replace="_fragments :: script">
+
+</th:block>
+</body>
+</html>

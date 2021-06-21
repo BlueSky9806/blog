@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>分类页</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(2)">
+  </nav>
+
+  <!-- 中间 -->
+  <div class="m-container-small m-padded-tb-large">
+    <div class="ui container">
+
+      <!-- header -->
+      <div class="ui attached segment animate__animated animate__fadeInTopLeft">
+        <div class="ui two column grid middle aligned">
+          <div class="column">
+            <h2 class="ui teal header">分类</h2>
+          </div>
+          <div class="column right aligned">
+            共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${#arrays.length(types)}">&nbsp;14&nbsp;</h2>个
+          </div>
+        </div>
+      </div>
+
+      <!-- 遍历每个分类 -->
+      <div class="ui segment attached m-padded-tb-large animate__animated animate__fadeInTopLeft">
+        <div class="ui labeled button m-margin-tb-tiny" th:each="type : ${types}">
+          <!-- 隐藏域，方便分页携带类型 id -->
+          <input type="hidden" name="activeTypeId" th:value="${activeTypeId}">
+          <a th:href="@{/types/{id}(id=${type.id})}" class="ui basic button" th:classappend="${type.id == activeTypeId} ? 'teal'" th:text="${type.name}"></a>
+          <div class="ui basic left pointing label" th:classappend="${type.id == activeTypeId} ? 'teal'" th:text="${type.count}"></div>
+        </div>
+      </div>
+      <br>
+      <!-- content -->
+      <div id="data-container" th:fragment="typePage">
+        <div class="ui top attached teal segment animate__animated animate__fadeInBottomLeft">
+          <!-- 每个分类下的blog -->
+          <div class="ui padded vertical segment m-padded-tb-big m-padded-lr" th:each="blog : ${blogs.list}" >
+            <div class="ui mobile reversed stackable grid">
+              <div class="eleven wide column">
+                <!-- 标题 -->
+                <h3 class="ui header"><a th:href="@{/blogs/{id}(id=${blog.id})}" target="_blank" style="color: #0a001f" th:text="${blog.title}"></a></h3>
+                <!-- 博客简介 -->
+                <p class="m-text" th:text="${#strings.abbreviate(blog.content,100)}">
+
+                </p>
+                <div class="ui grid">
+                  <div class="eleven wide column">
+                    <div class="ui mini horizontal link list">
+                      <!-- 头像 -->
+                      <div class="item">
+                        <img th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                      </div>
+                      <!-- 姓名 -->
+                      <div class="item">
+                        <a href="#" class="header"></a><span th:text="${blog.user.nickName}"></span>
+                      </div>
+                      <!-- 更新时间 -->
+                      <div class="item">
+                        <i class="calendar icon"></i>&nbsp;<span th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd')}"></span>
+                      </div>
+                      <!-- 浏览次数 -->
+                      <div class="item">
+                        <i class="eye icon"></i>&nbsp;&nbsp;<span th:text="${blog.views}"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 分类名称 -->
+                  <div class="right aligned five wide column">
+                    <a href="#" target="_blank" class="ui mini teal tag label" th:text="${blog.type.name}">精选</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="five wide column">
+                <a th:href="@{/blogs/{id}(id=${blog.id})}" target="_blank">
+                  <img th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- footer -->
+        <div class="ui attached segment">
+          <div class="ui two column grid middle aligned">
+            <div class="column">
+              <a onclick="loaddate(this)" th:attr="data-page=${blogs.prePage}" th:unless="${blogs.isFirstPage}" class="ui mini teal basic button">上一页</a>
+            </div>
+            <div class="column right aligned">
+              <a onclick="loaddate(this)" th:attr="data-page=${blogs.nextPage}" th:unless="${blogs.isLastPage}" class="ui mini teal basic button">下一页</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+   <!--footer-->
+  <footer th:replace="_fragments :: footer">
+  </footer>
+
+  <!-- jQuery cdn 因为semantic.min.js文件是依赖于jQuery文件 -->
+  <th:block th:replace="_fragments :: script">
+  </th:block>
+
+<script>
+  function loaddate(obj) {
+    $('#data-container').load(/*[[@{/types}]]*/"/blog/types/", {
+      pn: $(obj).data('page'),
+      type_id: $("input[name='activeTypeId']").val()
+    })
+  }
+
+  $(document).ready(function () {
+    $('#latestBlogs').load("/blog/latestBlogs", {})
+  })
+</script>
+</body>
+
+</html>

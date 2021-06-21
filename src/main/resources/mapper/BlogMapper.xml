@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghao.mapper.BlogMapper">
+
+    <resultMap id="blogMap" type="com.zhanghao.po.Blog">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="firstPicture" column="firstPicture"/>
+        <result property="flag" column="flag"/>
+        <result property="views" column="views"/>
+        <result property="appreciation" column="appreciation"/>
+        <result property="shareStatement" column="shareStatement"/>
+        <result property="comment" column="comment"/>
+        <result property="published" column="published"/>
+        <result property="recommend" column="recommend"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="type" javaType="com.zhanghao.po.Type">
+            <id property="id" column="type_id"/>
+            <result property="name" column="name"/>
+        </association>
+        <association property="user" javaType="com.zhanghao.po.User">
+            <id property="id" column="uid"/>
+            <result property="nickName" column="nick_name"/>
+            <result property="avatar" column="avatar"/>
+        </association>
+    </resultMap>
+
+    <!-- 查询所有博客 -->
+    <select id="listBlogs" resultMap="blogMap">
+        SELECT b.id,
+               b.title,
+               b.content,
+               b.firstPicture,
+               b.flag,
+               b.views,
+               b.appreciation,
+               b.shareStatement,
+               b.comment,
+               b.published,
+               b.recommend,
+               b.update_time,
+               b.type_id,
+               t.name,
+               b.recommend,
+               b.update_time,
+               u.avatar,
+               u.nick_name
+        FROM tb_blog b
+            LEFT JOIN tb_type t ON b.type_id = t.id
+            LEFT JOIN tb_user u ON b.user_id = u.id
+        ORDER BY b.update_time DESC
+    </select>
+
+    <!-- 全局查询博客根据博客标题 -->
+    <select id="listBlogsByTitle" resultMap="blogMap">
+        SELECT b.id,
+               b.title,
+               b.content,
+               b.firstPicture,
+               b.flag,
+               b.views,
+               b.appreciation,
+               b.shareStatement,
+               b.comment,
+               b.published,
+               b.recommend,
+               b.update_time,
+               b.type_id,
+               t.name,
+               b.recommend,
+               b.update_time,
+               u.avatar,
+               u.nick_name
+        FROM tb_blog b
+                 LEFT JOIN tb_type t ON b.type_id = t.id
+                 LEFT JOIN tb_user u ON b.user_id = u.id
+        WHERE b.title LIKE CONCAT('%', #{title}, '%')
+        ORDER BY b.update_time DESC
+    </select>
+
+    <!-- 通过类型id查询所有博客 -->
+    <select id="listBlogsByTypeId" resultMap="blogMap">
+        SELECT
+            b.id,
+            b.title,
+            b.content,
+            b.comment,
+            b.firstPicture,
+            b.views,
+            b.flag,
+            b.update_time,
+            t.name,
+            u.nick_name,
+            u.avatar
+        FROM tb_blog b
+                 LEFT JOIN tb_user u ON b.user_id = u.id
+                 LEFT JOIN tb_type t ON b.type_id = t.id
+        WHERE b.type_id = #{id}
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="listBlogsByCriteria" resultMap="blogMap">
+        SELECT b.id,
+               b.title,
+               b.type_id,
+               t.name,
+               b.recommend,
+               b.update_time
+        FROM tb_blog b
+            LEFT JOIN tb_type t
+        ON b.type_id = t.id
+        <where>
+            <if test="title != null and title != ''">
+                title LIKE CONCAT('%', #{title}, '%')
+            </if>
+
+            <if test="recommend != false">
+                AND recommend = #{recommend}
+            </if>
+
+            <if test="type != null and type.id != null">
+                AND t.id = #{type.id}
+            </if>
+        </where>
+        ORDER BY b.update_time DESC
+    </select>
+
+    <!-- 新增博客 -->
+    <insert id="saveBlog" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO tb_blog
+            (id, title, content, firstpicture, flag, views,
+             appreciation, sharestatement, comment, published, recommend,
+             create_time, update_time, type_id, user_id)
+        VALUE (#{id}, #{title}, #{content}, #{firstPicture}, #{flag}, #{views},
+               #{appreciation}, #{shareStatement}, #{comment}, #{published},
+               #{recommend},#{createTime},#{updateTime},#{type.id},#{user.id})
+    </insert>
+
+    <!-- 查询最新三篇博客 -->
+    <select id="listLatestBlogs" resultMap="blogMap">
+        SELECT b.id,
+               b.title
+        FROM tb_blog b
+        ORDER BY b.update_time DESC
+        LIMIT 3
+    </select>
+
+    <!-- 通过id查询博客 -->
+    <select id="selectBlogById" resultMap="blogMap">
+        SELECT
+            b.id,
+            b.title,
+            b.content,
+            b.comment,
+            b.firstPicture,
+            b.views,
+            b.flag,
+            b.update_time,
+            b.shareStatement,
+            b.appreciation,
+            t.name,
+            u.nick_name,
+            u.avatar
+        FROM tb_blog b
+                 LEFT JOIN tb_user u ON b.user_id = u.id
+                 LEFT JOIN tb_type t ON b.type_id = t.id
+        WHERE b.id = #{id}
+    </select>
+</mapper>

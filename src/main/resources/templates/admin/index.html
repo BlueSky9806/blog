@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/custom.css">
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: admin_menu(0)" class="ui inverted attached  segment m-padded-tb-mini">
+  </nav>
+
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a href="#" class="item">发布</a>
+        <a href="#" class="teal active item">列表</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中间 -->
+  <div class="m-container-small m-padded-tb-large">
+    <div class="ui container">
+
+      <div class="ui container">
+        <div class="ui success large message">
+          <h2>Hi</h2>
+          <p th:text="${session.user.nickName} + ', 欢迎登录！'"></p>
+        </div>
+        <img src="https://picsum.photos/1000/450" alt="" class="ui rounded bordered fluid image">
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <!-- footer -->
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <!-- jQuery cdn 因为semantic.min.js文件是依赖于jQuery文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <script>
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    })
+  </script>
+</body>
+
+</html>

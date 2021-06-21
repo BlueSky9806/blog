@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>分类管理</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: admin_menu(2)"></nav>
+
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a th:href="@{/admin/editType}" class="item">添加</a>
+        <a th:href="@{/admin/types}" class="teal active item">列表</a>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  <!-- 中间 -->
+  <div class="m-container-small m-padded-tb-large">
+    <div class="ui container">
+
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="header">提示:</div>
+        <p th:text="${message}"></p>
+      </div>
+
+      <table class="ui teal celled table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>名称 </th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="type,status:${typePage.records}">
+            <td th:text="${status.count}"></td>
+            <td th:text="${type.name}"></td>
+            <td>
+              <a th:href="@{/admin/editType/{id}(id=${type.id},pn=${typePage.current})}" class="ui mini teal button">编辑</a>
+              <a th:href="@{/admin/editType/{id}(id=${type.id},pn=${typePage.current})}" class="ui mini red button deleteType">删除</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="6">
+              <div class="ui pagination mini menu">
+                <a class="item button"
+                   th:href="@{/admin/types(pn=${typePage.current}-1)}"
+                   th:unless="${typePage.current==1}">
+                  上一页
+                </a>
+                <a class="item button"
+                   th:href="@{/admin/types(pn=${typePage.current}+1)}"
+                   th:unless="${typePage.current==typePage.pages}">
+                  下一页
+                </a>
+              </div>
+              <a th:href="@{/admin/editType}" class="ui mini right floated teal basic button">新增</a>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </div>
+
+  <form id="deleteTypeForm" method="post">
+    <input type="hidden" name="_method" value="delete">
+  </form>
+
+  <br>
+  <br>
+  <br>
+
+  <!-- footer -->
+  <footer th:replace="_fragments :: footer"></footer>
+
+  <!-- jQuery cdn 因为semantic.min.js文件是依赖于jQuery文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+  <script>
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    })
+
+    // 消息提示关闭
+    $('.message .close').on('click',function () {
+      $(this).closest('.message').transition('fade')
+    })
+
+    // 删除Type 发送delete请求
+    $('.deleteType').click(function () {
+      var flag = confirm("确认删除?")
+      if (!flag)
+        return false
+      let href = $(this).attr("href")
+      $('#deleteTypeForm').attr("action", href).submit()
+      return false
+    })
+  </script>
+</body>
+
+</html>

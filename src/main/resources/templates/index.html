@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="_fragments :: head(~{::title})">
+  <title>博客</title>
+</head>
+
+<body>
+  <!-- 导航 -->
+  <nav th:replace="_fragments :: menu(1)">
+  </nav>
+
+  <!-- 中间 -->
+  <div class="m-padded-tb-large m-container">
+    <div class="ui container">
+      <div class="ui stackable grid">
+        <!-- 左边博客列表 -->
+        <div class="eleven wide column animate__animated animate__fadeInLeft">
+          <div class="ui attached segment">
+
+            <!-- header -->
+            <div class="ui two column grid middle aligned">
+              <div class="column">
+                <h2 class="ui teal header">博客</h2>
+              </div>
+              <div class="column right aligned">
+                共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${blogs.total}">&nbsp;14&nbsp;</h2>篇
+              </div>
+            </div>
+          </div>
+
+          <!-- content -->
+          <div id="data-container" th:fragment="blogPage">
+            <div class="ui attached segment">
+              <div class="ui padded vertical segment m-padded-tb-large m-padded-lr" th:each="blog : ${blogs.list}">
+
+                <div class="ui middle aligned mobile reversed stackable grid">
+                  <div class="eleven wide column">
+                    <!-- 标题 -->
+                    <h3 class="ui header"><a th:href="@{/blogs/{id}(id=${blog.id})}" target="_blank" style="color: #0a001f" th:text="${blog.title}"></a></h3>
+                    <!-- 部分正文 -->
+                    <p class="m-text" th:text="${#strings.abbreviate(blog.content,100)}">
+
+                    </p>
+                    <div class="ui grid">
+                      <div class="eleven wide column">
+                        <div class="ui mini horizontal link list">
+                          <!-- 作者头像 -->
+                          <div class="item">
+                            <img th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                          </div>
+                          <!-- 作者姓名 -->
+                          <div class="item">
+                            <a href="#" class="header"></a><span th:text="${blog.user.nickName}"></span>
+                          </div>
+                          <!-- 更新时间 -->
+                          <div class="item">
+                            <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd')}"></span>
+                          </div>
+                          <!-- 浏览次数 -->
+                          <div class="item">
+                            <i class="eye icon"></i>&nbsp;&nbsp;<span th:text="${blog.views}"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 分类名称 -->
+                      <div class="right aligned five wide column">
+                        <a th:href="@{/types/{id}(id=${blog.type.id})}" target="_self" class="ui mini teal tag label" th:text="${blog.type.name}">精选</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="five wide column">
+                    <a th:href="@{/blogs/{id}(id=${blog.id})}" target="_blank">
+                      <img th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- footer -->
+            <div class="ui attached segment">
+              <input type="hidden" name="page">
+              <div class="ui two column grid middle aligned">
+                <div class="column">
+                  <a onclick="page(this)" th:attr="data-page=${blogs.prePage}" th:unless="${blogs.isFirstPage}" class="ui mini teal basic button">上一页</a>
+                  <!--<a th:href="@{/?{pn}(pn=${blogs.prePage})}" th:attr="data-page=${blogs.prePage}" class="ui mini teal basic button">上一页</a>-->
+                </div>
+                <div class="column right aligned">
+                  <a onclick="page(this)" th:attr="data-page=${blogs.nextPage}" th:unless="${blogs.isLastPage}" class="ui mini teal basic button">下一页</a>
+                  <!--<a th:href="@{/?{pn}(pn=${blogs.nextPage})}" th:attr="data-page=${blogs.prePage}" class="ui mini teal basic button">下一页</a>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+  
+        <!-- 右边的top -->
+        <div class="five wide column animate__animated animate__fadeInRight">
+          <!-- 分类 -->
+          <div class="ui segments">
+            <div class="ui segment secondary">
+              <div class="ui two column grid">
+                <div class="column">
+                  <i class="idea icon"></i>分类
+                </div>
+                <div class="column right aligned">
+                  <a th:href="@{/types/-1}" target="_blank">more<i class="angle double right icon"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="ui teal segment">
+              <div class="ui fluid vertical menu">
+                <a th:href="@{/types/{id}(id=${type.id})}" class="teal item" th:each="type : ${types}">
+                  <span th:text="${type.name}"></span>
+                  <div class="ui teal left pointing label" th:text="${type.count}">1</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- 标签 -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer th:replace="_fragments :: footer">
+  </footer>
+
+  <!-- jQuery cdn 因为semantic.min.js文件是依赖于jQuery文件 -->
+  <th:block th:replace="_fragments :: script">
+
+  </th:block>
+
+<script>
+  function page(obj) {
+    $("input[name='page']").val($(obj).data("page"))
+    loaddate()
+  }
+  /* 局部刷新 一定把分页按钮所在div放在fragment片段里面 不然上页下页的数据不被更新 */
+  function loaddate() {
+    let searchContent = $('#global-search').val();
+    if (null != searchContent && searchContent.length !== '') {
+      $("#data-container").load(/*[[@{/}]]*/"/blog/",{
+        pn : $("[name='page']").val(),
+        searchContent: searchContent
+      })
+    } else {
+      // 发送Ajax
+      $("#data-container").load(/*[[@{/}]]*/"/blog/",{
+        pn : $("[name='page']").val()
+      })
+    }
+  }
+  // 全局搜索 发送Ajax请求
+  $('#global-search').keyup(function (event) {
+    if (event.keyCode === 13) {
+      loaddate()
+    }
+  })
+</script>
+
+</body>
+
+</html>

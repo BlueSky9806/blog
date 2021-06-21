@@ -1,0 +1,31 @@
+spring:
+  # datasource
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql:///blog?useSSL=false
+      username: root
+      password: xiaohao9806..
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 6000
+      use-unfair-lock: true
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      async-init: true
+
+# mybatisPlus
+mybatis-plus:
+  # 映射文件路径
+  mapper-locations: classpath:mapper/*.xml
+  # 全局配置
+  configuration:
+    map-underscore-to-camel-case: true
+    # 如果查询结果中包含空值的列，则mybatis在映射的时候，不会映射这个字段
+    call-setters-on-nulls: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

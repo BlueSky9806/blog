@@ -1,0 +1,41 @@
+spring:
+  # thymeleaf
+  thymeleaf:
+    mode: HTML
+    cache: false
+
+  mvc:
+    # 开启页面表单Rest功能
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  # mail
+  mail:
+    # 配置 SMTP 服务器地址
+    host: smtp.qq.com
+    # 发送者邮箱
+    username: 844547799@qq.com
+    # 授权码
+    password: jbaphhitktzebdje
+    # SMTP 服务器端口 465(smtp) 或 587(smtps)
+    port: 587
+    # 配置 SSL 加密工厂
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        # 表示开启 DEBUG 模式, 这样, 邮件发送过程的日志会在控制台打印出来, 方便排查错误
+        #debug: true
+
+  profiles:
+    active: dev
+
+zh:
+  task:
+    pool:
+      core-pool-size: 8
+      max-pool-size: 16
+      keep-alive-seconds: 10
+      queue-capacity: 100
+      thread-name-prefix: hao-

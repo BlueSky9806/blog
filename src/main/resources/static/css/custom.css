@@ -1,0 +1,128 @@
+body {
+  background: url("../images/back.png");
+}
+.m-padded-tb-mini {
+  /* 
+    1em并不是固定等于多少像素的，是根据元素的字体大小而定。
+    Chrome默认是16px大小。
+    !important用于提高指定CSS样式规则的应用优先权；它被添加到
+    CSS值的末尾以赋予它更多权重。
+    */
+  padding-top: 0.2em !important;
+  padding-bottom: 0.2em !important;
+}
+
+.m-padded {
+  padding: 1em !important;
+}
+.m-padded-mini {
+  padding: 0.2em !important;
+}
+.m-padded-tb-small {
+  padding-top: 0.5em !important;
+  padding-bottom: 0.5em !important;
+}
+.m-padded-tb {
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
+}
+.m-padded-tb-large {
+  padding-top: 2em !important;
+  padding-bottom: 2em !important;
+}
+.m-padded-tb-big {
+  padding-top: 3em !important;
+  padding-bottom: 3em !important;
+}
+.m-padded-tb-massive {
+  padding-top: 5em !important;
+  padding-bottom: 5em !important;
+}
+.m-padded-lr {
+  padding-left: 1em !important;
+  padding-right: 1em !important;
+}
+.m-margin-tb-tiny {
+  margin-bottom: 1em !important;
+  margin-left: 0.5em !important;
+  margin-right: 0.5em !important;
+}
+
+
+/* --------text--------- */
+.m-text {
+  font-weight: 300 !important;
+  letter-spacing: 1px  !important;
+  line-height: 1.8;
+  opacity: 0.5 !important;
+}
+.m-text-thin {
+  font-weight: 300 !important;
+}
+
+.m-text-spaced {
+  letter-spacing: 1px  !important;
+}
+
+.m-text-lined {
+  line-height: 1.8;
+}
+
+.m-opacity-mini {
+  opacity: 0.5 !important;
+}
+
+/* ------display------- */
+.m-inline-block {
+  display: inline-block !important;
+}
+
+/* -----container----- */
+.m-container {
+  max-width: 72em !important;
+  margin: auto !important;
+}
+.m-container-small {
+  max-width: 60em !important;
+  margin: auto !important;
+}
+
+/* -----position----- */
+.m-fixed {
+  position: fixed !important;
+  z-index: 1 !important;
+}
+
+.m-right-bottom {
+  bottom: 0 !important;
+  right: 0 !important;
+}
+
+/* -----color----- */
+.m-teal {
+  color: #00B5AD !important;
+}
+
+/* -----font----- */
+.main-title {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 22px;
+  font-weight: 300 !important;
+  padding: 0 10px;
+  color: #000;
+}
+.sub-title {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  padding-left: 10px;
+  color: #333;
+}
+.square {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  background: #000;
+  vertical-align: middle;
+}
